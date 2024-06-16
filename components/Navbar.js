@@ -8,9 +8,12 @@ import { ethers } from 'ethers';
 // import { LuUser2 } from 'react-icons/lu';
 // import { useMoralis } from "react-moralis";
 import { formatAddress } from '../utils/helpers';
+import Link from 'next/link';
 
-const pages = ['MarketPlace', 'Rankings'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+const pages = ['Create Nfts', 'MarketPlace', 'Rankings'];
+const location = ['/create/nft', '/marketplace', '/rankings']; // Updated paths
+// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Navbar() {
   // const { activate, active, account } = useWeb3React();
@@ -20,12 +23,12 @@ function Navbar() {
   const [walletAddress, setWalletAddress] = useState("");
 
   // Check local storage for saved wallet address on component mount
-  useEffect(() => {
-    const savedAddress = localStorage.getItem('walletAddress');
-    if (savedAddress) {
-      setWalletAddress(savedAddress);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedAddress = localStorage.getItem('walletAddress');
+  //   if (savedAddress) {
+  //     setWalletAddress(savedAddress);
+  //   }
+  // }, []);
 
   const _connectToMetaMask = useCallback(async () => {
     if (isConnecting) {
@@ -69,7 +72,9 @@ function Navbar() {
         >
           {pages.map((page, index) => (
             <div key={index} className="flex gap-10">
-              {page}
+             <Link href={location[index]}>
+                {page}
+              </Link>
             </div>
           ))}
           <button

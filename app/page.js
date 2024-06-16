@@ -1,5 +1,6 @@
 import CreatorsSection from "@/components/CreatorsSection";
 import HeroSection from "@/components/HeroSection";
+import NFTlist from "@/components/NFTList";
 import Navbar from "@/components/Navbar";
 import SectionOne from "@/components/SectionOne";
 
@@ -10,9 +11,10 @@ export default function Home() {
     <main className="">
       <div className="">
         <Navbar />
-        <HeroSection />
-        <SectionOne />
-        <CreatorsSection />
+        <NFTlist />
+        {/* <HeroSection /> */}
+        {/* <SectionOne /> */}
+        {/* <CreatorsSection /> */}
       </div>
     </main>
   // </MoralisProvider>
