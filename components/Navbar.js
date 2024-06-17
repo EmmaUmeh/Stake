@@ -1,34 +1,19 @@
 // components/Navbar.js
 "use client";
 
-import React, { useState, useCallback, useEffect } from 'react';
-// import { useWeb3React } from '@web3-react/core';
-
+import React, { useState, useCallback } from 'react';
 import { ethers } from 'ethers';
-// import { LuUser2 } from 'react-icons/lu';
-// import { useMoralis } from "react-moralis";
 import { formatAddress } from '../utils/helpers';
 import Link from 'next/link';
 
-
-const pages = ['Create Nfts', 'MarketPlace', 'Rankings'];
-const location = ['/create/nft', '/marketplace', '/rankings']; // Updated paths
-// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Stake', 'Lending', 'Governance'];
+const location = ['/', '/lending', '/governance'];
 
 function Navbar() {
-  // const { activate, active, account } = useWeb3React();
-  const [accountData, setAccountData] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
-
-  // Check local storage for saved wallet address on component mount
-  // useEffect(() => {
-  //   const savedAddress = localStorage.getItem('walletAddress');
-  //   if (savedAddress) {
-  //     setWalletAddress(savedAddress);
-  //   }
-  // }, []);
+  const [isConnected, setIsConnected] = useState(false);
 
   const _connectToMetaMask = useCallback(async () => {
     if (isConnecting) {
@@ -37,19 +22,18 @@ function Navbar() {
     }
 
     const ethereum = window.ethereum;
-    if (typeof ethereum !== "undefined") {
+    if (typeof ethereum!== "undefined") {
       try {
         setIsConnecting(true);
         const accounts = await ethereum.request({
           method: "eth_requestAccounts",
         });
         const address = accounts[0];
-        setWalletAddress(address);
-        // Save address to local storage
-        localStorage.setItem('walletAddress', address);
+        setWalletAddress(address); // Update the wallet address state
+        setIsConnected(true); // Set isConnected to true
         console.log("Connected to MetaMask with address: ", address);
       } catch (error) {
-        alert(`Error connecting to MetaMask: ${error?.message ?? error}`);
+        alert(`Error connecting to MetaMask: ${error?.message?? error}`);
       } finally {
         setIsConnecting(false);
       }
@@ -62,12 +46,12 @@ function Navbar() {
     <>
       <div className="relative flex justify-between items-center p-2 pt-8 px-10 text-white sm:px-4 md:flex-row md:justify-between md:items-center md:px-10">
         <div>
-          <h2 className="font-bold lg:text-4xl text-3xl">LFG🚀</h2>
+          <h2 className="font-bold lg:text-4xl text-3xl">Stake🚀</h2>
         </div>
 
         <div
           className={`lg:flex lg:relative absolute lg:top-0 lg:left-0 top-24 left-52 items-center lg:gap-5 gap-10 font-semibold text-nowrap ${
-            isOpen ? 'block lg:p-0 p-5 px-10 py-5 rounded-md' : 'hidden'
+            isOpen? 'block lg:p-0 p-5 px-10 py-5 rounded-md' : 'hidden'
           } lg:flex top-24 left-52 items-center justify-between font-semibold text-nowrap`}
         >
           {pages.map((page, index) => (
@@ -82,7 +66,7 @@ function Navbar() {
             className="flex gap-3 text-[#121212] items-center bg-white p-2 px-4 py-2 rounded-[25px]"
             disabled={isConnecting}
           >
-            {walletAddress ? `Connected: ${formatAddress(walletAddress)}` : 'Connect wallet'}
+            {!isConnected? 'Connect wallet' : `Connected: ${formatAddress(walletAddress)}`}
           </button>
         </div>
 
@@ -103,7 +87,6 @@ function Navbar() {
         </button>
       </div>
     </>
-    // dl
   );
 }
 

@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "ethers": "^6.13.0",
     "ipfs-http-client": "^60.0.1",
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
-    "react-moralis": "^1.4.2"
+    "react-moralis": "^1.4.2",
+    "web3": "^4.9.0"
   },
   "devDependencies": {
     "postcss": "^8",

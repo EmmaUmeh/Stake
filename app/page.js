@@ -1,8 +1,6 @@
-import CreatorsSection from "@/components/CreatorsSection";
 import HeroSection from "@/components/HeroSection";
-import NFTlist from "@/components/NFTList";
 import Navbar from "@/components/Navbar";
-import SectionOne from "@/components/SectionOne";
+
 
 
 export default function Home() {
@@ -11,7 +9,7 @@ export default function Home() {
     <main className="">
       <div className="">
         <Navbar />
-        <NFTlist />
+        <HeroSection />
         {/* <HeroSection /> */}
         {/* <SectionOne /> */}
         {/* <CreatorsSection /> */}
