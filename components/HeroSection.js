@@ -72,7 +72,7 @@ function HeroSection() {
       const result = await contractInstance.methods.stake().send({
         from: account,
         value: web3.utils.toWei(stakingAmount, "ether"),
-        gas: 3000000 // Increased gas limit
+        gas: 3000 // Increased gas limit
       });
       console.log("Staking successful!", result);
       setTransactionStatus("Staking successful!");
