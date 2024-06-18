@@ -10,8 +10,8 @@ function HeroSection() {
   const [contractInstance, setContractInstance] = useState(null);
   const [stakingAmount, setStakingAmount] = useState("");
   const [transactionStatus, setTransactionStatus] = useState("");
-  const [stakedAmount, setStakedAmount] = useState(null);
-  const [stakingTime, setStakingTime] = useState(null);
+  const [stakedAmount, setStakedAmount] = useState(localStorage.getItem("stakedAmount") || null);
+  const [stakingTime, setStakingTime] = useState(localStorage.getItem("stakingTime") || null);
   const [countdown, setCountdown] = useState("");
 
   const CLAIM_PERIOD = 86400; // Example claim period in seconds (24 hours)
@@ -30,6 +30,7 @@ function HeroSection() {
       setAccount(accounts[0]);
     } else {
       console.log("Non-Ethereum browser detected. You should consider trying MetaMask!");
+      setWeb3(null); // Explicitly set web3 to null if no MetaMask detected
     }
   };
 
@@ -72,12 +73,14 @@ function HeroSection() {
       const result = await contractInstance.methods.stake().send({
         from: account,
         value: web3.utils.toWei(stakingAmount, "ether"),
-        gas: 3000 // Increased gas limit
+        gas: 3000000 // Increased gas limit
       });
       console.log("Staking successful!", result);
       setTransactionStatus("Staking successful!");
       setStakedAmount(stakingAmount);
       setStakingTime(Date.now());
+      localStorage.setItem("stakedAmount", stakingAmount);
+      localStorage.setItem("stakingTime", Date.now());
       getStakedAmount(); // Fetch the updated staked amount
     } catch (error) {
       console.error("Staking failed:", error);
@@ -117,10 +120,6 @@ function HeroSection() {
     }
   }, [stakingTime]);
 
-  if (!web3 || !account.length) {
-    return <div>Loading...</div>; // Show loading indicator until Web3 is ready
-  }
-
   return (
     <React.Fragment>
       <div className="lg:pl-44 mt-20 mb-10 text-white">
@@ -146,24 +145,30 @@ function HeroSection() {
 
             {transactionStatus && <div className="mt-4 text-green-500">{transactionStatus}</div>}
 
-            <div className="flex items-center justify-between">
-              <span>You will receive</span>
-              <span>{web3.utils.fromWei(stakingAmount, "ether")} ETH</span>
-            </div>
-            <div className="flex items-center">
-              <button
-                onClick={stakeTokens}
-                className="flex gap-3 text-white items-center bg-primary p-2 px-20 py-2 rounded-lg"
-              >
-                Stake
-              </button>
-            </div>
+            {web3 && account ? (
+              <div>
+                <div className="flex items-center justify-between">
+                  <span>You will receive</span>
+                  <span>{web3.utils.fromWei(stakingAmount, "ether")} ETH</span>
+                </div>
+                <div className="flex items-center">
+                  <button
+                    onClick={stakeTokens}
+                    className="flex gap-3 text-white items-center bg-primary p-2 px-20 py-2 rounded-lg"
+                  >
+                    Stake
+                  </button>
+                </div>
 
-            {stakedAmount && (
-              <div className="mt-4 text-black">
-                <h4>Staked Amount: {stakedAmount} ETH</h4>
-                <h4>Claim Countdown: {countdown}</h4>
+                {stakedAmount && (
+                  <div className="mt-4 text-black">
+                    <h4>Staked Amount: {stakedAmount} ETH</h4>
+                    <h4>Claim Countdown: {countdown}</h4>
+                  </div>
+                )}
               </div>
+            ) : (
+              <div className="mt-4 text-red-500">MetaMask is not installed. Please install MetaMask to use this feature.</div>
             )}
           </div>
         </div>
