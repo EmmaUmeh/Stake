@@ -79,8 +79,6 @@ function HeroSection() {
       setTransactionStatus("Staking successful!");
       setStakedAmount(stakingAmount);
       setStakingTime(Date.now());
-      localStorage.setItem("stakedAmount", stakingAmount);
-      localStorage.setItem("stakingTime", Date.now());
       getStakedAmount(); // Fetch the updated staked amount
     } catch (error) {
       console.error("Staking failed:", error);
@@ -145,30 +143,24 @@ function HeroSection() {
 
             {transactionStatus && <div className="mt-4 text-green-500">{transactionStatus}</div>}
 
-            {web3 && account ? (
-              <div>
-                <div className="flex items-center justify-between">
-                  <span>You will receive</span>
-                  <span>{web3.utils.fromWei(stakingAmount, "ether")} ETH</span>
-                </div>
-                <div className="flex items-center">
-                  <button
-                    onClick={stakeTokens}
-                    className="flex gap-3 text-white items-center bg-primary p-2 px-20 py-2 rounded-lg"
-                  >
-                    Stake
-                  </button>
-                </div>
+            <div className="flex items-center justify-between">
+              <span>You will receive</span>
+              <span>{web3?.utils?.fromWei(stakingAmount, "ether")} ETH</span>
+            </div>
+            <div className="flex items-center">
+              <button
+                onClick={stakeTokens}
+                className="flex gap-3 text-white items-center bg-primary p-2 px-20 py-2 rounded-lg"
+              >
+                Stake
+              </button>
+            </div>
 
-                {stakedAmount && (
-                  <div className="mt-4 text-black">
-                    <h4>Staked Amount: {stakedAmount} ETH</h4>
-                    <h4>Claim Countdown: {countdown}</h4>
-                  </div>
-                )}
+            {stakedAmount && (
+              <div className="mt-4 text-black">
+                <h4>Staked Amount: {stakedAmount} ETH</h4>
+                <h4>Claim Countdown: {countdown}</h4>
               </div>
-            ) : (
-              <div className="mt-4 text-red-500">MetaMask is not installed. Please install MetaMask to use this feature.</div>
             )}
           </div>
         </div>
