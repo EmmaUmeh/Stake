@@ -2,10 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
-import Image from "next/image";
 import StakeAbi from "@/contracts/stake.json";
-import Dognft from "@/public/assets/dognft.png";
-import EthSvg from "@/images/ethereum.svg";
 
 function HeroSection() {
   const [web3, setWeb3] = useState(null);
@@ -39,7 +36,7 @@ function HeroSection() {
   const createContractInstance = async () => {
     if (!web3) return;
     const contractABI = StakeAbi.abi;
-    const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+    const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Replace with your deployed contract address
     const contract = new web3.eth.Contract(contractABI, contractAddress);
     setContractInstance(contract);
   };
@@ -75,6 +72,7 @@ function HeroSection() {
       const result = await contractInstance.methods.stake().send({
         from: account,
         value: web3.utils.toWei(stakingAmount, "ether"),
+        gas: 3000000 // Increased gas limit
       });
       console.log("Staking successful!", result);
       setTransactionStatus("Staking successful!");
@@ -89,8 +87,8 @@ function HeroSection() {
 
   const getStakedAmount = async () => {
     try {
-      const amount = await contractInstance.methods.stakedAmount(account).call();
-      setStakedAmount(web3.utils.fromWei(amount, "ether"));
+      const stake = await contractInstance.methods.stakes(account).call();
+      setStakedAmount(web3.utils.fromWei(stake.balance, "ether"));
     } catch (error) {
       console.error("Error fetching staked amount:", error);
     }
