@@ -10,8 +10,8 @@ function HeroSection() {
   const [contractInstance, setContractInstance] = useState(null);
   const [stakingAmount, setStakingAmount] = useState("");
   const [transactionStatus, setTransactionStatus] = useState("");
-  const [stakedAmount, setStakedAmount] = useState(localStorage.getItem("stakedAmount") || null);
-  const [stakingTime, setStakingTime] = useState(localStorage.getItem("stakingTime") || null);
+  const [stakedAmount, setStakedAmount] = useState(null);
+  const [stakingTime, setStakingTime] = useState(null);
   const [countdown, setCountdown] = useState("");
 
   const CLAIM_PERIOD = 86400; // Example claim period in seconds (24 hours)
